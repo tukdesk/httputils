@@ -46,8 +46,12 @@ import (
 // }
 
 func RegisterSubroute(prefix string, app, mod *web.Mux) {
-	str := "^" + prefix + "(?P<_>(/.*)?)$"
 	mod.Use(middleware.SubRouter)
-	app.Handle(regexp.MustCompile(str), mod)
+	app.Handle(RegexpWithURLPrefix(prefix), mod)
 	return
+}
+
+func RegexpWithURLPrefix(prefix string) *regexp.Regexp {
+	str := "^" + prefix + "(?P<_>(/.*)?)$"
+	return regexp.MustCompile(str)
 }
