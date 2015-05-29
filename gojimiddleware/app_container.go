@@ -2,8 +2,10 @@ package gojimiddleware
 
 import (
 	"fmt"
-	"net/http"
+	"log"
 
+	"github.com/zenazn/goji/bind"
+	"github.com/zenazn/goji/graceful"
 	"github.com/zenazn/goji/web"
 )
 
@@ -12,8 +14,7 @@ var (
 )
 
 type App struct {
-	m    *web.Mux
-	quit chan error
+	m *web.Mux
 }
 
 func NewApp() *App {
@@ -25,8 +26,7 @@ func NewAppWithMux(m *web.Mux) *App {
 		m = web.New()
 	}
 	return &App{
-		m:    m,
-		quit: make(chan error, 1),
+		m: m,
 	}
 }
 
@@ -34,15 +34,30 @@ func (this *App) Mux() *web.Mux {
 	return this.m
 }
 
-func (this *App) run(addr string) {
-	this.quit <- http.ListenAndServe(addr, this.m)
-}
-
+// see goji.Serve()
 func (this *App) Run(addr string) error {
-	go this.run(addr)
-	return <-this.quit
+	listener := bind.Socket(addr)
+	log.Println("App listen on ", listener.Addr())
+	graceful.HandleSignals()
+
+	// support einhorn?
+	bind.Ready()
+
+	graceful.PreHook(func() { log.Println("App received signal, gracefully stopping") })
+	graceful.PostHook(func() { log.Println("App stopped") })
+
+	if err := graceful.Serve(listener, this.m); err != nil {
+		return err
+	}
+
+	graceful.Wait()
+	return ErrAppClosed
 }
 
 func (this *App) Close() {
-	this.quit <- ErrAppClosed
+	graceful.Shutdown()
+}
+
+func (this *App) CloseNow() {
+	graceful.ShutdownNow()
 }
