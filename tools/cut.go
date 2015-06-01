@@ -15,6 +15,10 @@ func CutRune(s string, l int) (int, string) {
 }
 
 func CutEmail(s string) (string, string) {
+	if s == "" {
+		return "", ""
+	}
+
 	index := strings.Index(s, "@")
 	if index != -1 {
 		return s[:index], s[index+1:]
