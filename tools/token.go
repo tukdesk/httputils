@@ -11,14 +11,14 @@ var (
 	ErrTokenExpired = fmt.Errorf("token expired")
 )
 
-func GenerateToken(data map[string]interface{}, expire time.Duration, key []byte) string {
+func GenerateToken(data map[string]interface{}, expiration time.Duration, key []byte) string {
 	token := jwt.New(jwt.GetSigningMethod("HS256"))
 	if data != nil {
 		token.Claims = data
 	} else {
 		token.Claims = make(map[string]interface{})
 	}
-	token.Claims["exp"] = time.Now().Add(expire).Unix()
+	token.Claims["exp"] = time.Now().Add(expiration).Unix()
 	signed, _ := token.SignedString(key)
 	return signed
 }
