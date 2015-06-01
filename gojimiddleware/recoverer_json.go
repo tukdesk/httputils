@@ -18,6 +18,12 @@ func RecovererJson(c *web.C, h http.Handler) http.Handler {
 
 		defer func() {
 			if err := recover(); err != nil {
+				// maybe use panic to abort request
+				if apierr, ok := err.(*jsonutils.APIError); ok {
+					jsonutils.OutputJsonError(apierr, w, r)
+					return
+				}
+
 				logger.Error(err)
 				debug.PrintStack()
 				jsonutils.OutputJsonError(ErrInternalServerError, w, r)
