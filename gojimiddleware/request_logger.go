@@ -19,12 +19,12 @@ func RequestLogger(c *web.C, h http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
-func GetRequestLogger(c *web.C, w http.ResponseWriter, r *http.Request) *xlogger {
+func GetRequestLogger(c *web.C, w http.ResponseWriter, r *http.Request) *XLogger {
 	if c.Env == nil {
 		c.Env = map[interface{}]interface{}{}
 	}
 
-	if logger, ok := c.Env[RequestLoggerKey].(*xlogger); ok {
+	if logger, ok := c.Env[RequestLoggerKey].(*XLogger); ok {
 		return logger
 	}
 
