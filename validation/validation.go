@@ -32,6 +32,10 @@ func NewMulti() *Validation {
 	}
 }
 
+func (this *Validation) HasErrors() bool {
+	return len(this.errors) > 0
+}
+
 func (this *Validation) FirstError() error {
 	if len(this.errors) == 0 {
 		return nil
@@ -51,7 +55,7 @@ func (this *Validation) should() bool {
 	if this.multi {
 		return true
 	}
-	return len(this.errors) == 0
+	return !this.HasErrors()
 }
 
 func (this *Validation) Required(key string, obj interface{}) {
