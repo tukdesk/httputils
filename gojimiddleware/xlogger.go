@@ -11,11 +11,7 @@ import (
 	"github.com/qiniu/log"
 )
 
-var logger *log.Logger
-
-func init() {
-	logger = log.New(os.Stderr, "", log.LstdFlags|log.Llevel)
-}
+var logger = log.New(os.Stderr, "", log.LstdFlags|log.Llevel)
 
 var pid = uint32(os.Getpid())
 
