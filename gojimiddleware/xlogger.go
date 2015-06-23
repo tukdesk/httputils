@@ -11,6 +11,12 @@ import (
 	"github.com/qiniu/log"
 )
 
+var logger *log.Logger
+
+func init() {
+	logger = log.New(os.Stderr, "", log.LstdFlags|log.Llevel)
+}
+
 var pid = uint32(os.Getpid())
 
 func genReqId() string {
@@ -29,7 +35,7 @@ func newXLogger(w http.ResponseWriter, r *http.Request) *XLogger {
 	reqId := genReqId()
 	w.Header().Set("X-Req-Id", reqId)
 	return &XLogger{
-		logger: log.Std,
+		logger: logger,
 		reqId:  reqId,
 	}
 }
