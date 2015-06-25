@@ -22,7 +22,7 @@ func RequestTimer(c *web.C, h http.Handler) http.Handler {
 			lw.WriteHeader(http.StatusOK)
 		}
 
-		logger.Infof("[%d] %s | %s | %s", lw.Status(), r.Method, r.URL.String(), SinceStr(start))
+		logger.SimpleInfof("[%d] %s | %s | %s", lw.Status(), r.Method, r.URL.String(), SinceStr(start))
 	}
 
 	return http.HandlerFunc(fn)
