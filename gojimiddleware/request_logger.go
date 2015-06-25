@@ -3,6 +3,8 @@ package gojimiddleware
 import (
 	"net/http"
 
+	"github.com/tukdesk/httputils/xlogger"
+
 	"github.com/zenazn/goji/web"
 )
 
@@ -19,16 +21,16 @@ func RequestLogger(c *web.C, h http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
-func GetRequestLogger(c *web.C, w http.ResponseWriter, r *http.Request) *XLogger {
+func GetRequestLogger(c *web.C, w http.ResponseWriter, r *http.Request) *xlogger.XLogger {
 	if c.Env == nil {
 		c.Env = map[interface{}]interface{}{}
 	}
 
-	if logger, ok := c.Env[RequestLoggerKey].(*XLogger); ok {
+	if logger, ok := c.Env[RequestLoggerKey].(*xlogger.XLogger); ok {
 		return logger
 	}
 
-	logger := newXLogger(w, r)
+	logger := xlogger.NewXLogger(w, r)
 	c.Env[RequestLoggerKey] = logger
 
 	return logger
