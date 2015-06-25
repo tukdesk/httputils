@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	normalLogger = log.New(os.Stderr, "", log.LstdFlags|log.Llevel|log.Lshortfile)
+	normalLogger = log.New(os.Stderr, "", log.LstdFlags|log.Llevel|log.Lshortfile|log.Lmodule)
 	simpleLogger = log.New(os.Stderr, "", log.LstdFlags|log.Llevel)
 )
 
