@@ -19,7 +19,6 @@ func RequestLogger() func(*echo.Context) error {
 
 func GetRequestLogger(c *echo.Context) *xlogger.XLogger {
 	// Context 被复用, store 中已有 logger, reset 后直接返回
-
 	if logger, ok := c.Get(RequestLoggerKey).(*xlogger.XLogger); ok {
 		logger.ResetForRequest(c.Response().Writer(), c.Request())
 		return logger
