@@ -2,6 +2,7 @@ package validation
 
 import (
 	"fmt"
+	"regexp"
 )
 
 type ValidationError struct {
@@ -147,6 +148,18 @@ func (this *Validation) Range(key string, obj interface{}, min, max int) {
 	valid := ValidatorRange(obj, min, max)
 	if !valid {
 		message := fmt.Sprintf("is not in range [%d, %d]", min, max)
+		this.AddError(key, message)
+	}
+}
+
+func (this *Validation) Match(key, val string, re *regexp.Regexp) {
+	if !this.should() {
+		return
+	}
+
+	valid := ValidatorMatch(re, val)
+	if !valid {
+		message := fmt.Sprintf("is not matched")
 		this.AddError(key, message)
 	}
 }
