@@ -91,6 +91,15 @@ func ValidatorIn(obj interface{}, options []interface{}) bool {
 	return false
 }
 
+func ValidatorNotIn(obj interface{}, options []interface{}) bool {
+	for _, one := range options {
+		if obj == one {
+			return false
+		}
+	}
+	return true
+}
+
 func ValidatorRange(obj interface{}, min, max int) bool {
 	return ValidatorMin(obj, min) && ValidatorMax(obj, max)
 }

@@ -140,6 +140,18 @@ func (this *Validation) In(key string, obj interface{}, options []interface{}) {
 	}
 }
 
+func (this *Validation) NotIn(key string, obj interface{}, options []interface{}) {
+	if !this.should() {
+		return
+	}
+
+	valid := ValidatorNotIn(obj, options)
+	if !valid {
+		message := fmt.Sprintf("is not available")
+		this.AddError(key, message)
+	}
+}
+
 func (this *Validation) Range(key string, obj interface{}, min, max int) {
 	if !this.should() {
 		return
