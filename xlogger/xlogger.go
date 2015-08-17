@@ -194,3 +194,7 @@ func (this *XLogger) ResetForRequest(w http.ResponseWriter, r *http.Request) {
 	this.r = r
 	return
 }
+
+func (this *XLogger) ReqId() string {
+	return this.reqId
+}

@@ -6,7 +6,7 @@ import (
 	"unicode/utf8"
 )
 
-var reMail = regexp.MustCompile("[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[a-zA-Z0-9](?:[\\w-]*[\\w])?")
+var reMail = regexp.MustCompile("^[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[a-zA-Z0-9](?:[\\w-]*[\\w])?$")
 var reSlug = regexp.MustCompile("^[a-zA-Z0-9][\\w-]*$")
 
 func ValidatorRequired(obj interface{}) bool {
