@@ -12,13 +12,20 @@ var (
 )
 
 func GenerateToken(data map[string]interface{}, expiration time.Duration, key []byte) string {
+	if data == nil {
+		data = map[string]interface{}{}
+	}
+
+	data["exp"] = time.Now().Add(expiration).Unix()
+	return SignData(data, key)
+}
+
+func SignData(data map[string]interface{}, key []byte) string {
 	token := jwt.New(jwt.GetSigningMethod("HS256"))
 	if data != nil {
 		token.Claims = data
-	} else {
-		token.Claims = make(map[string]interface{})
 	}
-	token.Claims["exp"] = time.Now().Add(expiration).Unix()
+
 	signed, _ := token.SignedString(key)
 	return signed
 }
